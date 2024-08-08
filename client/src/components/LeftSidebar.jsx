@@ -25,20 +25,20 @@ const LeftSidebar = () => {
         <div className="my-4">
           <Link
             to="/"
-            className="flex items-center my-2 px-4 py-2 hover:bg-slate-700 hover:cursor-pointer rounded-full"
+            className="flex items-center my-2 px-4 py-2 transition-all ease-in-out duration-300 hover:bg-slate-700 hover:cursor-pointer rounded-full"
           >
             <div>
               <CiHome size="24px" />
             </div>
             <h1 className="font-bold text-[16px] ml-2">Home</h1>
           </Link>
-          <div className="flex items-center my-2 px-4 py-2 hover:bg-slate-700 hover:cursor-pointer rounded-full">
+          <div className="flex items-center my-2 px-4 py-2 transition-all ease-in-out duration-300 hover:bg-slate-700 hover:cursor-pointer rounded-full">
             <div>
               <CiHashtag size="24px" />
             </div>
             <h1 className="font-bold text-[16px] ml-2">Explore</h1>
           </div>
-          <div className="flex items-center my-2 px-4 py-2 hover:bg-slate-700 hover:cursor-pointer rounded-full">
+          <div className="flex items-center my-2 px-4 py-2 transition-all ease-in-out duration-300 hover:bg-slate-700 hover:cursor-pointer rounded-full">
             <div>
               <IoIosNotificationsOutline size="24px" />
             </div>
@@ -46,14 +46,14 @@ const LeftSidebar = () => {
           </div>
           <Link
             // to={`/profile/${user?._id}`}
-            className="flex items-center my-2 px-4 py-2 hover:bg-slate-700 hover:cursor-pointer rounded-full"
+            className="flex transition-all ease-in-out duration-300 items-center my-2 px-4 py-2 hover:bg-slate-700 hover:cursor-pointer rounded-full"
           >
             <div>
               <CiUser size="24px" />
             </div>
             <h1 className="font-bold text-[16px] ml-2">Profile</h1>
           </Link>
-          <div className="flex items-center my-2 px-4 py-2 hover:bg-slate-700 hover:cursor-pointer rounded-full">
+          <div className="flex transition-all ease-in-out duration-300 items-center my-2 px-4 py-2 hover:bg-slate-700 hover:cursor-pointer rounded-full">
             <div>
               <CiBookmark size="24px" />
             </div>
@@ -61,14 +61,14 @@ const LeftSidebar = () => {
           </div>
           <div
             // onClick={logoutHandler}
-            className="flex items-center my-2 px-4 py-2 hover:bg-slate-700 hover:cursor-pointer rounded-full"
+            className="flex transition-all ease-in-out duration-300 items-center my-2 px-4 py-2 hover:bg-slate-700 hover:cursor-pointer rounded-full"
           >
             <div>
               <AiOutlineLogout size="24px" />
             </div>
             <h1 className="font-bold text-16px ml-2">Logout</h1>
           </div>
-          <button className="px-4 py-2 border-none text-md bg-slate-700 hover:bg-slate-800 w-full rounded-full text-zinc-200 font-bold">
+          <button className="px-4 py-2 border-none text-md bg-slate-800 hover:bg-slate-700 w-full rounded-full text-zinc-200 font-bold transition-all ease-in-out duration-300">
             Post
           </button>
         </div>
