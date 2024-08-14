@@ -27,7 +27,7 @@ const Routing = () => {
     },
   ]);
   return (
-    <div>
+    <div className="h-screen w-full">
       <RouterProvider router={appRouter} />
     </div>
   );
