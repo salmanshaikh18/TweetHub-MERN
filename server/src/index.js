@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import connnectToDB from "./config/dbConnnection.js";
 import cookieParser from "cookie-parser";
 import { userRouter } from "./routes/userRoutes.js";
+import { tweetRouter } from "./routes/tweetRoute.js";
 
 config();
 const app = express();
@@ -21,6 +22,7 @@ app.use(cookieParser());
 
 // api
 app.use("/api/auth", userRouter);
+app.use("/api/tweet", tweetRouter)
 
 app.listen(PORT, () => {
   console.log(`Server is running at port: ${PORT}`);

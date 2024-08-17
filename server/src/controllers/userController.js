@@ -1,7 +1,7 @@
 import { User } from "../models/userSchema.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { handleError } from "../config/handleError.js";
+import { handleError } from "../utils/handleError.js";
 
 export const SignUp = async (req, res) => {
   try {

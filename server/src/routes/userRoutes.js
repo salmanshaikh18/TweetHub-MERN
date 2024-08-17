@@ -1,5 +1,6 @@
 import express from "express"
 import { LogOut, SignIn, SignUp } from "../controllers/userController.js"
+// import { isAuthenticated } from "../middlewares/auth.js"
 
 export const userRouter = express.Router()
 
