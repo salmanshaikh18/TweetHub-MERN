@@ -75,11 +75,12 @@ const Auth = () => {
     <div className="h-screen w-full xl:grid-cols-2 flex justify-center items-center bg-slate-900">
       <div className="w-full h-full sm:w-[500px] sm:h-[560px] py-4 flex flex-col justify-center items-center bg-[#111f3fs] rounded-xl">
         <div className="mb-6 text-center mx-4 sm:mx-0 absolute top-12">
-          <h1 className=" text-2xl font-bold text-zinc-300">
-            Welcome To Social Media Platform
+          <h1 className=" text-2xl font-bold text-green-500">
+            Welcome To <span className="text-purple-500">TweetHub</span>
           </h1>
           <p className="text-zinc-400">
-            Fill in the details to get started with the SocialMediaPlatform
+            Fill in the details to get started with the{" "}
+            <span className="text-purple-500">TweetHub</span>
           </p>
         </div>
         <Tabs
@@ -93,14 +94,16 @@ const Auth = () => {
           <TabsContent value="signin">
             <Card className="h-[404px]">
               <CardHeader>
-                <CardTitle>Sign In</CardTitle>
+                <CardTitle className="text-green-500">Sign In</CardTitle>
                 <CardDescription>
                   Access your account effortlessly with our secure sign-in page.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="space-y-1">
-                  <Label htmlFor="username">Email</Label>
+                  <Label htmlFor="username" className="text-purple-500">
+                    Email
+                  </Label>
                   <Input
                     value={userEmail}
                     onChange={(e) => setUserEmail(e.target.value)}
@@ -109,7 +112,9 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="username">Password</Label>
+                  <Label htmlFor="username" className="text-purple-500">
+                    Password
+                  </Label>
                   <Input
                     value={userPassword}
                     onChange={(e) => setUserPassword(e.target.value)}
@@ -119,27 +124,29 @@ const Auth = () => {
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col items-start">
-                <Button
-                  className="flex justify-center items-center gap-2"
+                <button
+                  className="flex justify-center items-center gap-2 bg-purple-900 hover:bg-purple-950 px-3 py-2 rounded-md text-sm transition-all ease-in-out duration-300"
                   onClick={handleSignIn}
-                  variant={"secondary"}
+                  // variant={"secondary"}
                 >
                   Sign In {isLoading && <LuLoader2 />}
-                </Button>
+                </button>
               </CardFooter>
             </Card>
           </TabsContent>
           <TabsContent value="signup">
             <Card>
               <CardHeader>
-                <CardTitle>Sign Up</CardTitle>
+                <CardTitle className="text-green-500">Sign Up</CardTitle>
                 <CardDescription>
                   Create your account effortlessly with our easy sign-up page.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="space-y-1">
-                  <Label htmlFor="current">Email</Label>
+                  <Label htmlFor="current" className="text-purple-500">
+                    Email
+                  </Label>
                   <Input
                     id="email"
                     type="email"
@@ -149,7 +156,9 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="current">Password</Label>
+                  <Label htmlFor="current" className="text-purple-500">
+                    Password
+                  </Label>
                   <Input
                     id="password"
                     type="password"
@@ -159,7 +168,9 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="new">Confirm Password</Label>
+                  <Label htmlFor="new" className="text-purple-500">
+                    Confirm Password
+                  </Label>
                   <Input
                     id="confirm-password"
                     type="password"
@@ -170,13 +181,13 @@ const Auth = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button
-                  className="flex justify-center items-center gap-2"
+                <button
+                  className="flex justify-center items-center gap-2 bg-purple-900 hover:bg-purple-950 px-3 py-2 rounded-md text-sm transition-all ease-in-out duration-300"
                   onClick={handleSignUp}
-                  variant={"secondary"}
+                  // variant={"secondary"}
                 >
                   Sign Up {isLoading && <LuLoader2 />}
-                </Button>
+                </button>
               </CardFooter>
             </Card>
           </TabsContent>
