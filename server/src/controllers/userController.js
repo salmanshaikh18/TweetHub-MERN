@@ -1,6 +1,7 @@
 import { User } from "../models/userSchema.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { handleError } from "../config/handleError.js";
 
 export const SignUp = async (req, res) => {
   try {
@@ -33,10 +34,69 @@ export const SignUp = async (req, res) => {
       email,
     });
 
-    const jwtToken = jwt.sign(
+    return res.status(201).json({
+      message: "Account created successfully",
+      success: true,
+      user: newUser,
+    });
+  } catch (error) {
+    handleError(error, "SignUp", res);
+  }
+};
+
+export const SignIn = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email && !password) {
+      return res.status(400).json({
+        message: "Email and password are required!",
+        success: false,
+      });
+    }
+
+    if (!email) {
+      return res.status(400).json({
+        message: "Please provide your email!",
+        success: false,
+      });
+    }
+
+    if (!password) {
+      return res.status(400).json({
+        message: "Please provide your password",
+        success: false,
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "User does not exist with this email!",
+        success: false,
+      });
+    }
+
+    const isPasswordMatched = await bcryptjs.compare(password, user.password);
+
+    if (!password) {
+      return res.status(400).json({
+        message: "Please provide your password!",
+      });
+    }
+
+    if (!isPasswordMatched) {
+      return res.status(400).json({
+        message: "Incorrect email or password!",
+        success: "false",
+      });
+    }
+
+    const jwtToken = await jwt.sign(
       {
-        _id: newUser._id,
-        email: newUser.email,
+        _id: user._id,
+        email: user.email,
       },
       process.env.JWT_KEY,
       {
@@ -51,17 +111,24 @@ export const SignUp = async (req, res) => {
       sameSite: "lax",
     });
 
-    return res.status(201).json({
-      message: "Account created successfully",
+    return res.status(200).json({
+      message: `Welcome back ${user.userName} :)`,
       success: true,
-      user: newUser
     });
   } catch (error) {
-    console.log(`Error inside SignUp controller ${error}`);
-    res.status(500).json({
-      message: "Someting went wrong while signup",
-      success: false,
-      error: error,
+    handleError(error, "SignIn", res);
+  }
+};
+
+export const LogOut = async (req, res) => {
+  try {
+    res.clearCookie("token");
+
+    return res.status(200).json({
+      message: "User logged out successfully",
+      success: true,
     });
+  } catch (error) {
+    handleError(error, "LogOut", res);
   }
 };
