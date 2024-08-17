@@ -132,3 +132,28 @@ export const LogOut = async (req, res) => {
     handleError(error, "LogOut", res);
   }
 };
+
+export const Bookmark = async (req, res) => {
+  try {
+    const loggedInUserId = req.body.userId;
+    const tweetId = req.params.tweetId;
+
+    const user = await User.findById(loggedInUserId)
+   
+    if (user.bookmarks.includes(tweetId)) {
+        await User.findByIdAndUpdate(loggedInUserId, {$pull: {bookmarks: tweetId}})
+        return res.status(200).json({
+            message: "User unbookmarked your tweet",
+            success: true
+        })
+    } else {
+        await User.findByIdAndUpdate(loggedInUserId, {$push: {bookmarks: tweetId}})
+        return res.status(200).json({
+            message: "User bookmarked your tweet",
+            success: true
+        })
+    }
+  } catch (error) {
+    handleError(error, "Bookmark", res);
+  }
+};
