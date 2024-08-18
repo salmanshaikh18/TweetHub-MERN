@@ -9,8 +9,10 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { USER_API_ENDPOINT } from "@/utils/constants";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const LeftSidebar = () => {
+  const {user} = useSelector(store => store.user)
   const navigate = useNavigate()
   const handleLogout = async (e) => {
     e.preventDefault()
@@ -59,7 +61,7 @@ const LeftSidebar = () => {
             <h1 className="font-bold text-[16px] ml-2">Notifications</h1>
           </div>
           <NavLink
-            to={`/profile/`}
+            to={`/profile/${user?._id}`}
             className="flex transition-all ease-in-out duration-300 items-center my-2 px-4 py-2 hover:bg-slate-700 hover:cursor-pointer rounded-full"
           >
             <div>
