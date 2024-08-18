@@ -18,8 +18,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
-  const navigate = useNavigate();
-  
+  const navigate = useNavigate()
   // state of SignUp
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
@@ -31,74 +30,67 @@ const Auth = () => {
   const [userPassword, setUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Tab state
-  const [tabValue, setTabValue] = useState("signin");
+  const [tabsValue, setTabsValue] = useState("signin")
 
   const handleSignUp = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     console.log({
       name,
       userName,
       email,
-      password,
-    });
+      password
+    })
 
     try {
-      const response = await axios.post(
-        `${USER_API_ENDPOINT}/signup`,
-        { name, userName, email, password },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`${USER_API_ENDPOINT}/signup`, {
+        name, userName, email, password
+      }, {
+        headers: {
+          'Content-Type': "application/json"
+        },
+        withCredentials: true
+      })
 
-      toast.success(`${response.data.message}, now you can signin`);
+      toast.success(`${response.data.message}, Now you can SignIn`)
+      
+      console.log("Response: ", response)
 
-      console.log("Response: ", response);
+      setName("")
+      setUserName("")
+      setEmail("")
+      setPassword("")
 
-      setName("");
-      setUserName("");
-      setEmail("");
-      setPassword("");
-
-      // Switch to Sign In tab after successful sign-up
-      setTabValue("signin");
+      setTabsValue("signin")
     } catch (error) {
-      toast.error(error.response.data.message);
-      console.log(error);
+      toast.error(error.response.data.message)
+      console.log(error)
     }
   };
 
   const handleSignIn = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const response = await axios.post(
-        `${USER_API_ENDPOINT}/signin`,
-        { email: userEmail, password: userPassword },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-      toast.success(response.data.message);
-      navigate("/");
-      console.log("Response of singIn: ", response);
-      setUserEmail("");
-      setUserPassword("");
+      const response = await axios.post(`${USER_API_ENDPOINT}/signin`, {
+        email: userEmail, password: userPassword
+      }, {
+        headers: {
+          'Content-Type': "application/json"
+        },
+        withCredentials: true
+      })
+      toast.success(response.data.message)
+      navigate("/")
+      console.log("Response of singIn: ", response)
+      setUserEmail("")
+      setUserPassword("")
     } catch (error) {
-      toast.error(error.response.data.message);
-      console.log("Error inside handleSignIn: ", error);
+      toast.error(error.response.data.message)
+      console.log("Error inside handleSignIn: ", error)
     }
   };
-
   return (
     <div className="h-screen w-full xl:grid-cols-2 flex justify-center items-center bg-slate-900">
-      <div className="w-full h-full sm:w-[500px] sm:h-[560px] py-4 flex flex-col justify-center items-center bg-[#111f3f] rounded-xl">
+      <div className="w-full h-full sm:w-[500px] sm:h-[560px] py-4 flex flex-col justify-center items-center bg-[#111f3fs] rounded-xl">
         <div className="mb-6 text-center mx-4 sm:mx-0 absolute top-4">
           <h1 className=" text-2xl font-bold text-green-500">
             Welcome To <span className="text-purple-500">TweetHub</span>
@@ -109,8 +101,8 @@ const Auth = () => {
           </p>
         </div>
         <Tabs
-          value={tabValue}
-          onValueChange={(value) => setTabValue(value)}
+          value={tabsValue}
+          onValueChange={(value) => setTabsValue(value)}
           className="mx-4 sm:m-0 sm:w-[400px] absolute top-[80px]"
         >
           <TabsList className="grid w-full grid-cols-2">
@@ -153,6 +145,7 @@ const Auth = () => {
                 <button
                   className="flex justify-center items-center gap-2 bg-purple-900 hover:bg-purple-950 px-3 py-2 rounded-md text-sm transition-all ease-in-out duration-300"
                   onClick={handleSignIn}
+                  // variant={"secondary"}
                 >
                   Sign In {isLoading && <LuLoader2 />}
                 </button>
@@ -221,6 +214,7 @@ const Auth = () => {
                 <button
                   className="flex justify-center items-center gap-2 bg-purple-900 hover:bg-purple-950 px-3 py-2 rounded-md text-sm transition-all ease-in-out duration-300"
                   onClick={handleSignUp}
+                  // variant={"secondary"}
                 >
                   Sign Up {isLoading && <LuLoader2 />}
                 </button>

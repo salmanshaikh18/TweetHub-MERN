@@ -1,13 +1,28 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { CiHome } from "react-icons/ci";
 import { CiHashtag } from "react-icons/ci";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { CiUser } from "react-icons/ci";
 import { CiBookmark } from "react-icons/ci";
 import { AiOutlineLogout } from "react-icons/ai";
+import { USER_API_ENDPOINT } from "@/utils/constants";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const LeftSidebar = () => {
+  const navigate = useNavigate()
+  const handleLogout = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await axios.get(`${USER_API_ENDPOINT}/logout`)
+      toast.success(response.data.message)
+      navigate("/auth")
+      console.log("Resonse in side handleLogout: ", response)
+    } catch (error) {
+      console.log("Error inside handleLogout: ", error)
+    }
+  }
   return (
     <div className="w-full sm:w-[20%] border-r-[1px] border-zinc-700 px-4 flex flex-col items-center">
       <div className="mb-10 mt-4 text-xl font-bold text-zinc-200 text-center">
@@ -59,7 +74,7 @@ const LeftSidebar = () => {
             <h1 className="font-bold text-[16px] ml-2">Bookmarks</h1>
           </div>
           <div
-            // onClick={logoutHandler}
+            onClick={handleLogout}
             className="flex transition-all ease-in-out duration-300 items-center my-2 px-4 py-2 hover:bg-slate-700 hover:cursor-pointer rounded-full"
           >
             <div>
