@@ -111,7 +111,7 @@ export const GetFollowingUsersTweets = async (req, res) => {
       return await Tweet.find({userId: otherUsersId})
     }))
 
-    console.log(followingUsersTweets)
+    // console.log(followingUsersTweets)
 
     return res.status(200).json({
       tweets: [].concat(...followingUsersTweets)
