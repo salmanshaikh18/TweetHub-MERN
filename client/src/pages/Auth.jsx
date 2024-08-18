@@ -16,9 +16,12 @@ import { USER_API_ENDPOINT } from "@/utils/constants";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getUser } from "@/redux/slices/userSlice";
 
 const Auth = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
   // state of SignUp
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
@@ -30,62 +33,75 @@ const Auth = () => {
   const [userPassword, setUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [tabsValue, setTabsValue] = useState("signin")
+  const [tabsValue, setTabsValue] = useState("signin");
 
   const handleSignUp = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     console.log({
       name,
       userName,
       email,
-      password
-    })
+      password,
+    });
 
     try {
-      const response = await axios.post(`${USER_API_ENDPOINT}/signup`, {
-        name, userName, email, password
-      }, {
-        headers: {
-          'Content-Type': "application/json"
+      const response = await axios.post(
+        `${USER_API_ENDPOINT}/signup`,
+        {
+          name,
+          userName,
+          email,
+          password,
         },
-        withCredentials: true
-      })
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
 
-      toast.success(`${response.data.message}, Now you can SignIn`)
-      
-      console.log("Response: ", response)
+      toast.success(`${response.data.message}, Now you can SignIn`);
 
-      setName("")
-      setUserName("")
-      setEmail("")
-      setPassword("")
+      console.log("Response: ", response);
 
-      setTabsValue("signin")
+      setName("");
+      setUserName("");
+      setEmail("");
+      setPassword("");
+
+      setTabsValue("signin");
     } catch (error) {
-      toast.error(error.response.data.message)
-      console.log(error)
+      toast.error(error.response.data.message);
+      console.log(error);
     }
   };
 
   const handleSignIn = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      const response = await axios.post(`${USER_API_ENDPOINT}/signin`, {
-        email: userEmail, password: userPassword
-      }, {
-        headers: {
-          'Content-Type': "application/json"
+      const response = await axios.post(
+        `${USER_API_ENDPOINT}/signin`,
+        {
+          email: userEmail,
+          password: userPassword,
         },
-        withCredentials: true
-      })
-      toast.success(response.data.message)
-      navigate("/")
-      console.log("Response of singIn: ", response)
-      setUserEmail("")
-      setUserPassword("")
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      dispatch(getUser(response?.data?.user))
+      toast.success(response.data.message);
+      navigate("/");
+      console.log("Response of singIn: ", response);
+      setUserEmail("");
+      setUserPassword("");
     } catch (error) {
-      toast.error(error.response.data.message)
-      console.log("Error inside handleSignIn: ", error)
+      toast.error(error.response.data.message);
+      console.log("Error inside handleSignIn: ", error);
     }
   };
   return (

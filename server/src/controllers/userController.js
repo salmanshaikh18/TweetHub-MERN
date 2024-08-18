@@ -115,6 +115,7 @@ export const SignIn = async (req, res) => {
     return res.status(200).json({
       message: `Welcome back ${user.userName} :)`,
       success: true,
+      user: user
     });
   } catch (error) {
     handleError(error, "SignIn", res);

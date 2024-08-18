@@ -2,8 +2,12 @@ import React from "react";
 import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
 import myBanner from "../assets/myBanner.png";
 import Avatar from "react-avatar";
+import { useSelector } from "react-redux";
+import useGetProfile from "@/hooks/useGetProfile";
 
 const Profile = () => {
+  const {user} = useSelector((store) => store.user)
+  useGetProfile(user?._id)
   return (
     <div className="w-[50%] h-screen p-4">
       <div className="__top flex gap-4">

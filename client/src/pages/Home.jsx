@@ -1,9 +1,13 @@
 import React from "react";
 import { IoSettingsOutline } from "react-icons/io5";
 import CreatePost from "../components/CreatePost";
+// import { useSelector } from "react-redux";
+// import useGetProfile from "@/hooks/useGetProfile";
 // import CreatePost from "./CreatePost";
 
 const Home = () => {
+  // const {user} = useSelector((store) => store.user)
+  // useGetProfile(user._id)
   return (
     <div className="h-screen w-full sm:w-[50%] p-4">
       <div className="flex h-10 pb-2 justify-between">
