@@ -2,6 +2,7 @@ import { User } from "../models/userSchema.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { handleError } from "../utils/handleError.js";
+import mongoose from "mongoose";
 
 export const SignUp = async (req, res) => {
   try {
@@ -95,7 +96,7 @@ export const SignIn = async (req, res) => {
 
     const jwtToken = await jwt.sign(
       {
-        _id: user._id,
+        userId: user._id,
         email: user.email,
       },
       process.env.JWT_KEY,
@@ -138,22 +139,122 @@ export const Bookmark = async (req, res) => {
     const loggedInUserId = req.body.userId;
     const tweetId = req.params.tweetId;
 
-    const user = await User.findById(loggedInUserId)
-   
+    const user = await User.findById(loggedInUserId);
+
     if (user.bookmarks.includes(tweetId)) {
-        await User.findByIdAndUpdate(loggedInUserId, {$pull: {bookmarks: tweetId}})
-        return res.status(200).json({
-            message: "User unbookmarked your tweet",
-            success: true
-        })
+      await User.findByIdAndUpdate(loggedInUserId, {
+        $pull: { bookmarks: tweetId },
+      });
+      return res.status(200).json({
+        message: "Removed to bookmarks",
+        success: true,
+      });
     } else {
-        await User.findByIdAndUpdate(loggedInUserId, {$push: {bookmarks: tweetId}})
-        return res.status(200).json({
-            message: "User bookmarked your tweet",
-            success: true
-        })
+      await User.findByIdAndUpdate(loggedInUserId, {
+        $push: { bookmarks: tweetId },
+      });
+      return res.status(200).json({
+        message: "Saved to bookmarks",
+        success: true,
+      });
     }
   } catch (error) {
     handleError(error, "Bookmark", res);
   }
 };
+
+export const GetProfile = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(400).json({
+        message: "User not exists",
+        success: false,
+      });
+    }
+    console.log("User: ", user);
+    return res.status(200).json({
+      message: "Profile fetched :)",
+      success: true,
+      user: user,
+    });
+  } catch (error) {
+    handleError(error, "GetProfile", res);
+  }
+};
+
+export const GetOtherUsers = async (req, res) => {
+  try {
+    const loggedInUserId = req.params.userId;
+
+    // Validate if userId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(loggedInUserId)) {
+      return res.status(400).json({
+        message: "Invalid userId format",
+        success: false,
+      });
+    }
+
+    // Attempt to find the user in the database after validation
+    const loggedInUser = await User.findOne({ _id: loggedInUserId });
+
+    if (!loggedInUser) {
+      return res.status(400).json({
+        message: "User Not Found",
+        success: false,
+      });
+    }
+
+    // Fetch other users except the logged-in user
+    const otherUsers = await User.find({ _id: { $ne: loggedInUserId } }).select(
+      "-password"
+    );
+
+    if (!otherUsers || otherUsers.length === 0) {
+      return res.status(400).json({
+        message: "Currently, there are no other users!",
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      message: "Other users fetched successfully",
+      success: true,
+      otherUsers: otherUsers,
+    });
+  } catch (error) {
+    handleError(error, "GetOtherUsers", res);
+  }
+};
+
+
+export const Follow = async (req, res) => {
+  try {
+    const loggedInUserId = req.body.userId
+
+    const otherUserId = req.params.userId
+
+    const loggedInUser = await User.findById(loggedInUserId)
+    const otherUser = await User.findById(otherUserId)
+
+    if (!otherUser.followers.includes(loggedInUserId)) {
+      await otherUser.updateOne({$push: {followers: loggedInUserId}})
+      await loggedInUser.updateOne({$push: {following: otherUserId}})
+    } else {
+      return res.status(400).json({
+        message: `You already followed ${otherUser.userName}`,
+        success: false
+      })
+    }
+
+    return res.status(200).json({
+      message: `${loggedInUser.userName} just followed to ${otherUser.userName}`,
+      success: true
+    })
+
+  } catch (error) {
+    handleError(error, "Follow", res)
+  }
+}
