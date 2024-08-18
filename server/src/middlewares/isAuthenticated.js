@@ -23,7 +23,7 @@ export const isAuthenticated = async (req, res, next) => {
     // Verify the token
     const decoded = jwt.verify(token, process.env.JWT_KEY);
 
-    console.log("Decoded data: ", decoded);
+    // console.log("Decoded data: ", decoded);
 
     // Validate and check if the userIdParams exists and is valid
     if (userIdParams) {
