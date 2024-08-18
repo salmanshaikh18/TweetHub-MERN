@@ -1,25 +1,27 @@
 import { Tweet } from "../models/tweetSchema.js";
+import { User } from "../models/userSchema.js";
 import { handleError } from "../utils/handleError.js";
 
 export const CreateTweet = async (req, res) => {
   try {
-    const { description, id } = req.body;
+    const { description, userId } = req.body;
 
-    if (!description || !id) {
+    if (!description || !userId) {
       return res.status(400).json({
         message: "All the fields are required!",
         success: false,
       });
     }
 
-    await Tweet.create({
+    const tweet = await Tweet.create({
       description,
-      userId: id,
+      userId: userId,
     });
 
     return res.status(201).json({
       message: "Tweet created successfully :)",
-      message: true,
+      success: true,
+      createdTweet: tweet
     });
   } catch (error) {
     handleError(error, "CreateTweet", res);
@@ -78,4 +80,22 @@ export const LikeOrDislike = async (req, res) => {
   }
 };
 
+export const GetAllTweets = async (req, res) => {
+  try {
 
+    // AllTweets = loggedInUserTweets + followingUsersTweets
+    const loggedInUserId = req.params.userId
+    const loggedInUser = await User.findById(loggedInUserId)
+
+    const loggedInUserTweets = await Tweet.find({userId: loggedInUserId})
+
+    const followingUsersTweets = await Promise.all(loggedInUser.following.map(async(otherUsersId) => {
+      return await Tweet.find({_id: otherUsersId})
+    }))
+    return res.status(200).json({
+      tweets: loggedInUserTweets.concat(...followingUsersTweets)
+    })
+  } catch (error) {
+    handleError(error, "GetAllTweets", res)
+  }
+}

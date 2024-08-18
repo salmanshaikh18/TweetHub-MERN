@@ -23,10 +23,10 @@ export const isAuthorized = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_KEY);
     
     // Log the decoded payload for debugging
-    // console.log("Decoded:", decoded);
+    console.log("Decoded:", decoded);
     
     // Check if the decoded user ID matches the ID in the request body
-    if (decoded._id !== userId) {
+    if (decoded.userId !== userId) {
       return res.status(403).json({
         message: "You are not authorized!",
         success: false,

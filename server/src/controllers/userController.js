@@ -258,3 +258,27 @@ export const Follow = async (req, res) => {
     handleError(error, "Follow", res)
   }
 }
+
+export const UnFollow = async (req, res) => {
+  try {
+    const loggedInUserId = req.body.userId
+    const otherUserId = req.params.userId
+
+    const loggedInUser = await User.findById(loggedInUserId)
+    const otherUser = await User.findById(otherUserId)
+
+    if (loggedInUser.following.includes(otherUserId)) {
+      await otherUser.updateOne({$pull: {followers: loggedInUserId}})
+      await loggedInUser.updateOne({$pull: {following: otherUserId}})
+    } else {
+      return res.status(400).json({
+        message: "User has not followed yet"
+      })
+    }
+    return res.status(200).json({
+      message: `${loggedInUser.userName} unfollowed to ${otherUser.userName}`
+    })
+  } catch (error) {
+    handleError(error, "UnFollow", res)
+  }
+}
