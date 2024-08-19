@@ -8,7 +8,6 @@ dotenv.config();
 export const isAuthenticated = async (req, res, next) => {
   try {
     const token = req.cookies.token; // Extracting the token from cookies
-
     const userIdParams = req.params.userId;
     const userIdBody = req.body.userId;
 
@@ -33,7 +32,7 @@ export const isAuthenticated = async (req, res, next) => {
           success: false,
         });
       }
-      
+
       const isUserExistWithUserIdParams = await User.findById(userIdParams);
       if (!isUserExistWithUserIdParams) {
         return res.status(404).json({

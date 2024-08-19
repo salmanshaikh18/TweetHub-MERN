@@ -33,8 +33,10 @@ export const CreateTweet = async (req, res) => {
 
 export const DeleteTweet = async (req, res) => {
   try {
-    const { tweetId } = req.params;
+    const tweetId = req.params.tweetId;
+    
     const deletedTweet = await Tweet.findByIdAndDelete(tweetId);
+    console.log("TweetId: ", tweetId)
 
     if (!deletedTweet) {
       return res.status(404).json({

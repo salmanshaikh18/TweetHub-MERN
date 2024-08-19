@@ -1,12 +1,62 @@
 import React, { useEffect } from "react";
 import { FaRegBookmark, FaRegComment, FaRegHeart } from "react-icons/fa6";
 import Avatar from "react-avatar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { handleError } from "@/utils/handleError";
+import { TWEET_API_ENDPOINT } from "@/utils/constants";
+import { toast } from "react-toastify";
+import { getRefresh } from "@/redux/slices/tweetSlice";
+import axios from "axios";
+import { MdOutlineDelete } from "react-icons/md";
 
 const Tweet = () => {
+  const dispatch = useDispatch();
   const { tweets } = useSelector((store) => store.tweet);
-  // console.log("Tweets: ", tweets)
+  const { user } = useSelector((store) => store.user);
 
+  const handleLikeOrDislike = async (tweetId) => {
+    try {
+      const response = await axios.put(
+        `${TWEET_API_ENDPOINT}/like/${tweetId}`,
+        {
+          userId: user._id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch(getRefresh());
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      handleError(error, "handleLikeOrDislike");
+    }
+  };
+
+  const handleDeleteTweet = async (tweetId) => {
+    try {
+      const response = await axios.delete(
+        `${TWEET_API_ENDPOINT}/delete/${tweetId}`,
+        {
+          data: {
+            userId: user?._id, // Include userId in the request body
+          },
+          withCredentials: true,
+        }
+      );
+      dispatch(getRefresh());
+      console.log("Response inside handleDeleteTweet: ", response);
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      handleError(error, "handleDeleteTweet");
+    }
+  };
+  
   return (
     <>
       {tweets?.map((tweet) => {
@@ -32,14 +82,25 @@ const Tweet = () => {
                 <FaRegComment className="cursor-pointer text-lg hover:scale-x-110 transition-all ease-in-out duration-300 text-zinc-400" />
                 <p>0</p>
               </div>
-              <div className="__like flex justify-center items-center gap-1">
+              <div
+                onClick={() => handleLikeOrDislike(tweet?._id)}
+                className="__like flex justify-center items-center gap-1"
+              >
                 <FaRegHeart className="text-lg cursor-pointer hover:scale-x-110 transition-all ease-in-out duration-300 text-zinc-400" />
                 <p>{tweet?.like?.length}</p>
               </div>
               <div className="__save flex justify-center items-center gap-1">
-                <FaRegBookmark className="text-lg cursor-pointer hover:scale-x-110 transition-all ease-in-out duration-300 text-zinc-400" />
+                <FaRegBookmark className="text-[16px] cursor-pointer hover:scale-x-110 transition-all ease-in-out duration-300 text-zinc-400" />
                 <p>0</p>
               </div>
+              {user?._id === tweet?.userId && (
+                <div
+                  onClick={() => handleDeleteTweet(tweet?._id)}
+                  className="__save flex justify-center items-center gap-1"
+                >
+                  <MdOutlineDelete className="text-xl cursor-pointer hover:scale-x-110 transition-all ease-in-out duration-300 text-zinc-400" />
+                </div>
+              )}
             </div>
           </div>
         );
