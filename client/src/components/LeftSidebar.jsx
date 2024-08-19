@@ -9,33 +9,38 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { USER_API_ENDPOINT } from "@/utils/constants";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getMyProfile, getOtherUsers, getUser } from "@/redux/slices/userSlice";
 
 const LeftSidebar = () => {
+  const dispatch = useDispatch()
   const {user} = useSelector(store => store.user)
   const navigate = useNavigate()
   const handleLogout = async (e) => {
     e.preventDefault()
     try {
       const response = await axios.get(`${USER_API_ENDPOINT}/logout`)
+      dispatch(getUser(null))
+      dispatch(getOtherUsers(null))
+      dispatch(getMyProfile(null))
       toast.success(response.data.message)
       navigate("/auth")
       console.log("Resonse in side handleLogout: ", response)
     } catch (error) {
+      toast.error(error.response.data.message)
       console.log("Error inside handleLogout: ", error)
     }
   }
   return (
     <div className="w-full sm:w-[20%] border-r-[1px] border-zinc-700 px-4 hidden sm:flex flex-col items-center">
-      <div className="mb-10 mt-4 text-xl font-bold text-zinc-200 text-center">
+      <div className="mb-10 mt-6 text-xl font-bold text-zinc-200 text-center">
         {/* <img
             className="ml-5"
             width={"24px"}
             src="https://www.edigitalagency.com.au/wp-content/uploads/new-Twitter-logo-x-black-png-1200x1227.png"
             alt="twitter-logo"
           /> */}
-        <h1>Social Media</h1>
-        <h1>Platform</h1>
+        <h1 className="text-purple-500 text-3xl">TweetHub</h1>
       </div>
       <div>
         <div className="my-4">

@@ -1,13 +1,44 @@
-import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./slices/userSlice";
 import tweetSlice from "./slices/tweetSlice";
 
-const store = configureStore({
-    reducer: {
-        // actions
-        user: userSlice,
-        tweet: tweetSlice
-    }
+// Redux persist
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { PersistGate } from "redux-persist/integration/react";
+//-----------
+
+const persistConfig = {
+  key: "root",
+  version: 1,
+  storage,
+};
+
+const rootReducer = combineReducers({
+    user: userSlice,
+    tweet: tweetSlice,
 })
 
-export default store
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+
+export default store;

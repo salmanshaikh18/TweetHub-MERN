@@ -2,14 +2,61 @@ import React from "react";
 import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
 import myBanner from "../assets/myBanner.png";
 import Avatar from "react-avatar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useGetProfile from "@/hooks/useGetProfile";
 import { useParams } from "react-router-dom";
+import { handleError } from "@/utils/handleError";
+import { USER_API_ENDPOINT } from "@/utils/constants";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { followingUpdate } from "@/redux/slices/userSlice";
+import { getRefresh } from "@/redux/slices/tweetSlice";
 
 const Profile = () => {
+  const dispatch = useDispatch()
   const { user, profile } = useSelector((store) => store.user);
   const { userId } = useParams();
   useGetProfile(userId);
+
+  const handleFollowAndUnfollow = async () => {
+    if (user?.following.includes(userId)) {
+      // follow
+      try {
+        const response = await axios.post(
+          `${USER_API_ENDPOINT}/unfollow/${userId}`,
+          {
+            userId: user?._id,
+          },
+          { withCredentials: true }
+        );
+        dispatch(followingUpdate(userId))
+        dispatch(getRefresh())
+        toast.success(response.data.message)
+        console.log("Response inside handleUnFollow")
+      } catch (error) {
+        toast.error(error.response.data.message)
+        handleError(error, "handleFollowAndUnFollow");
+      }
+    } else {
+      // Unfollow
+      try {
+        const response = await axios.post(
+          `${USER_API_ENDPOINT}/follow/${userId}`,
+          {
+            userId: user?._id,
+          },
+          { withCredentials: true }
+        );
+        dispatch(followingUpdate(userId))
+        dispatch(getRefresh())
+        toast.success(response.data.message)
+        console.log("Response inside handleUnFollow")
+      } catch (error) {
+        toast.error(error.response.data.message)
+        handleError(error, "handleFollowAndUnFollow");
+      }
+    }
+  };
   return (
     <div className="w-[50%] h-screen p-4">
       <div className="__top flex gap-4">
@@ -31,8 +78,11 @@ const Profile = () => {
             Edit Profile
           </button>
         ) : (
-          <button className="bg-slate-700 text-sm px-3 py-2 hover:bg-slate-800 transition-all ease-in-out duration-300 font-medium rounded-full border-[1px] border-zinc-500">
-            Follow
+          <button
+            onClick={handleFollowAndUnfollow}
+            className="bg-slate-700 text-sm px-3 py-2 hover:bg-slate-800 transition-all ease-in-out duration-300 font-medium rounded-full border-[1px] border-zinc-500"
+          >
+            {user.following.includes(userId) ? "UnFollow" : "Follow"}
           </button>
         )}
       </div>
