@@ -26,7 +26,7 @@ const LeftSidebar = () => {
     }
   }
   return (
-    <div className="w-full sm:w-[20%] border-r-[1px] border-zinc-700 px-4 flex flex-col items-center">
+    <div className="w-full sm:w-[20%] border-r-[1px] border-zinc-700 px-4 hidden sm:flex flex-col items-center">
       <div className="mb-10 mt-4 text-xl font-bold text-zinc-200 text-center">
         {/* <img
             className="ml-5"

@@ -6,6 +6,8 @@ export const CreateTweet = async (req, res) => {
   try {
     const { description, userId } = req.body;
 
+    const user = await User.findById(userId).select("-password")
+
     if (!description || !userId) {
       return res.status(400).json({
         message: "All the fields are required!",
@@ -16,6 +18,7 @@ export const CreateTweet = async (req, res) => {
     const tweet = await Tweet.create({
       description,
       userId: userId,
+      userDetails: user
     });
 
     return res.status(201).json({
@@ -92,9 +95,11 @@ export const GetAllUsersTweets = async (req, res) => {
     const followingUsersTweets = await Promise.all(loggedInUser.following.map(async(otherUsersId) => {
       return await Tweet.find({userId: otherUsersId})
     }))
+    // console.log("All Tweets: ", followingUsersTweets)
     return res.status(200).json({
       tweets: loggedInUserTweets.concat(...followingUsersTweets)
     })
+   
   } catch (error) {
     handleError(error, "GetAllUsersTweets", res)
   }

@@ -24,7 +24,7 @@ const App = () => {
           theme="dark"
           transition={Bounce}
         />
-        <div className="bg-slate-900 h-screen sm:min-h-screen w-full text-zinc-200">
+        <div className="bg-slate-900 h-[300vh] sm:h-screen sm:min-h-screen w-full text-zinc-200">
           <Routing />
         </div>
       </ThemeProvider>

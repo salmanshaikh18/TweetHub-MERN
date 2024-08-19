@@ -8,7 +8,7 @@ const RightSidebar = () => {
   const { otherUsers } = useSelector((store) => store.user);
   console.log("OtherUsers from RightSideBar: ", otherUsers);
   return (
-    <div className="p-4 border-l-[1px] border-zinc-700 flex flex-col gap-4 w-full sm:w-[30%]">
+    <div className="p-4 border-l-[1px] border-zinc-700 hidden sm:flex flex-col gap-4 w-full sm:w-[30%]">
       <div className="w-full flex justify-center items-center">
         <CiSearch className="text-zinc-200 font-bold p-2  text-sm w-10 bg-slate-600 h-10 rounded-l-[20px]" />
         <input
@@ -45,8 +45,8 @@ const RightSidebar = () => {
                   />
                 </div>
                 <div>
-                  <h1>{user.name}</h1>
-                  <p>@{user.userName}</p>
+                  <h1>{user?.name}</h1>
+                  <p>@{user?.userName}</p>
                 </div>
               </div>
               <Link to={`/profile/${user?._id}`}>
