@@ -3,7 +3,7 @@ import { FaRegBookmark, FaRegComment, FaRegHeart } from "react-icons/fa6";
 import Avatar from "react-avatar";
 import { useDispatch, useSelector } from "react-redux";
 import { handleError } from "@/utils/handleError";
-import { TWEET_API_ENDPOINT } from "@/utils/constants";
+import { TWEET_API_ENDPOINT, timeSince } from "@/utils/constants";
 import { toast } from "react-toastify";
 import { getRefresh } from "@/redux/slices/tweetSlice";
 import axios from "axios";
@@ -70,8 +70,11 @@ const Tweet = () => {
               <div className="flex flex-col ml-[10px]">
                 <div className="flex gap-2">
                   <h1 className="font-bold">{tweet?.userDetails[0]?.name}</h1>
-                  <p className="text-zinc-500">
-                    @{tweet?.userDetails[0]?.userName}
+                  <p className="text-zinc-400">
+                    @{tweet?.userDetails[0]?.userName}.
+                  </p>
+                  <p className="text-zinc-400">
+                    {timeSince(tweet?.createdAt)}
                   </p>
                 </div>
                 <p>{tweet?.description}</p>
