@@ -18,7 +18,7 @@ const Home = () => {
   const dispatch = useDispatch()
 
   const {user} = useSelector(store => store.user)
-  // useGetUsers(user?._id)
+  useGetUsers(user?._id)
   useGetTweets(user?._id)
 
   const handleFollowingUserTweets = () => {

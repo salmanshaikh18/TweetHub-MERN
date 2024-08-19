@@ -17,6 +17,7 @@ const useGetUsers = (userId) => {
             withCredentials: true,
           }
         );
+        console.log("Response inside fetchOterhUsers: ", response)
         dispatch(getOtherUsers(response.data.otherUsers));
       } catch (error) {
         handleError(error, "useGetProfile");
