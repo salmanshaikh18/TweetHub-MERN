@@ -37,10 +37,10 @@ const CreatePost = () => {
     }
   }
   return (
-    <div className="w-full h-[130px] bg-slate-700 rounded-xl flex flex-col gap-1">
-      <div className="__top flex mb-[2px] flex-col justify-between p-4 w-full h-full">
+    <div className="w-full h-[70vh] md:h-[130px] bg-slate-900 md:bg-slate-700 rounded-xl flex flex-col gap-1">
+      <div className="__top flex mb-[2px] bg-slate-700 md:bg-none rounded-xl flex-col justify-between p-4 w-full h-full">
         <div className="flex">
-          <Avatar githubHandle="salmanshaikh18" size={40} round={true} />
+          <Avatar name={user?.userName} size={40} round={true} />
           <textarea
             type="text"
             value={description}

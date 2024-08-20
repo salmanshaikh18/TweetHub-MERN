@@ -42,9 +42,9 @@ const Home = () => {
   const { isActive } = useSelector((store) => store.tweet);
 
   return (
-    <div className="max-h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-slate-700 mb-2 w-full sm:w-[50%] p-4">
+    <div className="max-h-screen mb-2 w-full md:w-[50%] p-4">
       <div className="flex h-10 pb-2 justify-between">
-        <div className="flex justify-between w-[80%]">
+        <div className="flex justify-between w-full sm:w-[80%]">
           <h1
             onClick={handleLoggedInUserTweets}
             className={`font-bold text-lg ${
@@ -67,7 +67,9 @@ const Home = () => {
         </div>
       </div>
 
-      <CreatePost />
+      <div className="h-full max-h-[90vh] pr-3 pt-4 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-slate-700">
+        <CreatePost />
+      </div>
     </div>
   );
 };

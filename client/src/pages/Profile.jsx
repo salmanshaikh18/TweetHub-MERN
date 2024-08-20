@@ -58,7 +58,7 @@ const Profile = () => {
     }
   };
   return (
-    <div className="w-[50%] h-screen p-4">
+    <div className="bg-slate-800 md:bg-none md:w-[50%] h-screen p-4">
       <div className="__top flex gap-4">
         <MdOutlineKeyboardDoubleArrowLeft className="text-3xl cursor-pointer" />
         <div>
@@ -67,7 +67,11 @@ const Profile = () => {
         </div>
       </div>
       <div className="my-3">
-        <img src={myBanner} alt="" className="rounded-xl border-transparent" />
+        {/* <img src={myBanner} alt="" className="rounded-xl border-transparent" /> */}
+        <div className="bg-slate-700 h-40 flex justify-center items-center flex-col text-2xl font-bold">
+          <h1 className="font-semibold">Welcome To My Profile</h1>
+          <h1 className="text-purple-500 text-3xl">{profile?.userName}</h1>
+        </div>
         <div className="rounded-full absolute top-40 ml-3 border-2 border-zinc-200">
           <Avatar name={profile?.name} size={120} round={true} />
         </div>
@@ -91,9 +95,9 @@ const Profile = () => {
           <h1 className="font-bold">{profile?.name}</h1>
           <p className="text-sm text-slate-500">@{profile?.email}</p>
         </div>
-        <p>
+        {/* <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, dolor.
-        </p>
+        </p> */}
       </div>
     </div>
   );
